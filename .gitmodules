@@ -1,0 +1,4 @@
+[submodule "libs/vclib"]
+	path = libs/vclib
+	url = https://github.com/bigmat18/vclib.git
+	branch = demo
