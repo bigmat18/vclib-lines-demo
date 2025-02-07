@@ -9,15 +9,8 @@ int main(int argc, char** argv)
         DemoApplication,
         vcl::ViewerDrawer>;
 
-    DemoApplication tw("Viewer ImGui GLFW");
-
-    vcl::DrawableMesh<vcl::TriMesh> drawable = getMesh<vcl::TriMesh>();
-    drawable.setWireframeType(vcl::lines::LinesTypes::CPU_GENERATED);
-
-    tw.pushDrawableObject(drawable);
-
+    DemoApplication tw("Lines demo application");
     tw.fitScene();
-
     tw.show();
 
     return 0;

@@ -22,7 +22,7 @@ public:
 
         if (!ParentDrawer::isWindowMinimized())
         {
-            ImGui::ShowDemoWindow();
+            
         }
     };
 };
