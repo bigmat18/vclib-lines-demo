@@ -1,4 +1,6 @@
-cmake_minimum_required(VERSION 3.7)
+cmake_minimum_required(VERSION 3.10)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(LIBS_DIR ${PROJECT_SOURCE_DIR}/libs)
 set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)

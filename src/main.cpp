@@ -3,13 +3,13 @@
 
 int main(int argc, char** argv)
 {
-    using DemoApplication = vcl::RenderApp<
+    using App = vcl::RenderApp<
         vcl::glfw::WindowManager,
         vcl::Canvas,
         DemoApplication,
         vcl::ViewerDrawer>;
 
-    DemoApplication tw("Lines demo application");
+    App tw("Lines demo application");
     tw.fitScene();
     tw.show();
 
