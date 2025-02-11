@@ -7,6 +7,12 @@ LinesCubeHandler::LinesCubeHandler(const std::string name, const std::string inf
     LinesObjectHandler(name, info)
 { 
     generateLines(); 
+
+    mCpuGeneratedLines = vcl::lines::CPUGeneratedLines(mPoints);
+    mGpuGeneratedLines = vcl::lines::GPUGeneratedLines(mPoints);
+    mInstancingBasedLines = vcl::lines::InstancingBasedLines(mPoints);
+    mIndirectBasedLines = vcl::lines::IndirectBasedLines(mPoints);
+    mTextureBasedLines = vcl::lines::TextureBasedLines(mPoints);
 }
 
 void LinesCubeHandler::drawImGuiSettings() 
@@ -70,6 +76,8 @@ void LinesCubeHandler::drawImGuiSettings()
     int type = static_cast<int>(mType);
     if (ImGui::Combo("##4", &type, optionsTypes, IM_ARRAYSIZE(optionsTypes))) {
         mType = static_cast<vcl::lines::LinesTypes>(type);
+        vcl::lines::LinesSettings &newSettings = getLines().settings();
+        newSettings = settings;
     }
 
     int previusNumLines = mNumLines;
@@ -78,8 +86,14 @@ void LinesCubeHandler::drawImGuiSettings()
     ImGui::Text("Number of segments");
     ImGui::SliderScalar("1-1.000.000", ImGuiDataType_U32, &mNumLines, &minLinesNum, &maxLinesNum);
 
-    if(ImGui::Button("Update"))
+    if(ImGui::Button("Update")) {
         generateLines();
+        mCpuGeneratedLines.update(mPoints);
+        mGpuGeneratedLines.update(mPoints);
+        mInstancingBasedLines.update(mPoints);
+        mIndirectBasedLines.update(mPoints);
+        mTextureBasedLines.update(mPoints);
+    }
 
     ImGui::End();
 }
@@ -122,16 +136,4 @@ void LinesCubeHandler::generateLines()
             vcl::lines::LinesVertex::COLOR(color(gen), color(gen), color(gen), 1.0))
         );
     }
-
-    vcl::lines::CPUGeneratedLines        cpu(mPoints);
-    vcl::lines::GPUGeneratedLines        gpu(mPoints);
-    vcl::lines::InstancingBasedLines     instancing(mPoints);
-    vcl::lines::IndirectBasedLines       indirect(mPoints);
-    vcl::lines::TextureBasedLines        texture(mPoints);
-
-    mCpuGeneratedLines.swap(cpu);
-    mGpuGeneratedLines.swap(gpu);
-    mInstancingBasedLines.swap(instancing);
-    mIndirectBasedLines.swap(indirect);
-    mTextureBasedLines.swap(texture);
 }

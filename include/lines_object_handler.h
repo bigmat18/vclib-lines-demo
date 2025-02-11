@@ -1,4 +1,5 @@
 #include <vclib/bgfx/drawable/lines/drawable_lines.h>
+#include <vclib/bgfx/drawable/lines/drawable_polylines.h>
 
 #ifndef LINES_OBJECT_HANDLER
 #define LINES_OBJECT_HANDLER
