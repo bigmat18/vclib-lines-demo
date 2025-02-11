@@ -6,6 +6,7 @@
 
 #include "lines_objects_handlers/lines_cube_handler.h"
 #include "lines_objects_handlers/polylines_cube_handler.h"
+#include "lines_objects_handlers/mesh_handler.h"
 
 #ifndef DEMO_APPLICATION_H
 #define DEMO_APPLICATION_H
@@ -24,6 +25,7 @@ public:
     {
         mObjects.push_back(std::make_unique<LinesCubeHandler>("Lines in cube", "Set of lines with 100 points and 200 edge"));
         mObjects.push_back(std::make_unique<PolylinesCubeHandler>("Polylines in cube", "Set of points with 100 points and 200 edge"));
+        mObjects.push_back(std::make_unique<MeshHandler>());
     };
 
     virtual void onDraw(vcl::uint viewId) override
