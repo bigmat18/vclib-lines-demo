@@ -13,7 +13,7 @@ class MeshHandler : public LinesObjectHandler
     vcl::DrawableMesh<vcl::TriMesh> mMesh;
 
 public:
-    MeshHandler();
+    MeshHandler(const std::string path);
 
     ~MeshHandler() = default;
 
@@ -24,7 +24,7 @@ public:
     virtual void drawImGuiTesting() override;
 
 private:
-    void generateMesh();
+    void generateMesh(const std::string path);
 };
 
 #endif

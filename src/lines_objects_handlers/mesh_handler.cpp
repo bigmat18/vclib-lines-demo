@@ -1,9 +1,9 @@
 #include <lines_objects_handlers/mesh_handler.h>
 #include <imgui.h>
 
-MeshHandler::MeshHandler() : LinesObjectHandler("", "")
+MeshHandler::MeshHandler(const std::string path) : LinesObjectHandler("", "")
 {
-    generateMesh();
+    generateMesh(path);
     mName = mMesh.name();
     mInfo = "Mesh to test imported from " + mMesh.name() + ".obj";
 }
@@ -12,9 +12,9 @@ void MeshHandler::drawImGuiSettings() {}
 
 void MeshHandler::drawImGuiTesting() {}
 
-void MeshHandler::generateMesh() 
+void MeshHandler::generateMesh(const std::string path) 
 {
-    vcl::TriMesh m = vcl::load<vcl::TriMesh>("./bimba.obj");
+    vcl::TriMesh m = vcl::load<vcl::TriMesh>(path);
     vcl::updatePerVertexAndFaceNormals(m);
 
     m.enablePerVertexColor();

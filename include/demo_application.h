@@ -25,7 +25,8 @@ public:
     {
         mObjects.push_back(std::make_unique<LinesCubeHandler>("Lines in cube", "Set of lines with 100 points and 200 edge"));
         mObjects.push_back(std::make_unique<PolylinesCubeHandler>("Polylines in cube", "Set of points with 100 points and 200 edge"));
-        mObjects.push_back(std::make_unique<MeshHandler>());
+        mObjects.push_back(std::make_unique<MeshHandler>("./bimba.obj"));
+        mObjects.push_back(std::make_unique<MeshHandler>("./bunny.obj"));
     };
 
     virtual void onDraw(vcl::uint viewId) override
