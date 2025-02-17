@@ -1,5 +1,4 @@
 #include <demo_application.h>
-#include <render_utils.h>
 
 int main(int argc, char** argv)
 {

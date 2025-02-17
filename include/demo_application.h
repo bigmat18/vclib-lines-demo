@@ -8,6 +8,8 @@
 #include "lines_objects_handlers/polylines_cube_handler.h"
 #include "lines_objects_handlers/mesh_handler.h"
 
+#include <chrono>
+
 #ifndef DEMO_APPLICATION_H
 #define DEMO_APPLICATION_H
 
@@ -17,6 +19,7 @@ class DemoApplication : public vcl::imgui::ImGuiDrawer<DerivedRenderApp>
     using ParentDrawer = vcl::imgui::ImGuiDrawer<DerivedRenderApp>;
     std::vector<std::unique_ptr<LinesObjectHandler>> mObjects;
     int mIndexSelected = -1;
+    std::chrono::_V2::system_clock::time_point lastTime = std::chrono::high_resolution_clock::now();
 
 public:
     using ParentDrawer::ParentDrawer;
@@ -31,6 +34,12 @@ public:
 
     virtual void onDraw(vcl::uint viewId) override
     {
+        auto currentTime = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<float> deltaTime = currentTime - lastTime;
+        lastTime = currentTime;
+
+        float fps = 1.0f / deltaTime.count();
+        std::cout << "FPS: " << fps << std::endl;
         ParentDrawer::onDraw(viewId);
 
         if (!ParentDrawer::isWindowMinimized()) {
