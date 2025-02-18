@@ -25,6 +25,8 @@ public:
 
     virtual void drawObject(uint viewId) override { getPolylines().draw(viewId); }
 
+    virtual void udpateRandom(uint num) override;
+
     virtual void drawImGuiSettings() override;
 
     virtual void drawImGuiTesting() override;

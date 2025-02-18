@@ -140,3 +140,10 @@ void PolylinesCubeHandler::generatePoints()
         );
     }
 }
+
+void PolylinesCubeHandler::udpateRandom(uint num)
+{
+    mNumPoints = num;
+    generatePoints();
+    getPolylines().update(mPoints);
+}

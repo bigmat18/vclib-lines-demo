@@ -38,8 +38,8 @@ public:
 
     DemoApplication(uint, uint) 
     {
-        mObjects.push_back(std::make_unique<LinesCubeHandler>("Lines in cube", "Set of lines with 100 points and 200 edge"));
-        // mObjects.push_back(std::make_unique<PolylinesCubeHandler>("Polylines in cube", "Set of points with 100 points and 200 edge"));
+        mObjects.push_back(std::make_unique<LinesCubeHandler>("Lines in cube", "Set of lines inside a cube with random position and random params"));
+        mObjects.push_back(std::make_unique<PolylinesCubeHandler>("Polylines in cube", "A single polylines makes with random points and data"));
         // mObjects.push_back(std::make_unique<MeshHandler>("./bimba.obj"));
         // mObjects.push_back(std::make_unique<MeshHandler>("./bunny.obj"));
     };
@@ -59,7 +59,7 @@ public:
                 if(actualNumFrame < maxNumFrame) {
                     actualNumFrame++;
                 } else {
-                    std::cout << "Num: " << actualNumPoints << " FPS: " << avgFPS << std::endl;
+                    std::cerr << actualNumPoints << "," << avgFPS << "\n";
 
                     actualNumPoints += stepTests;
                     avgFPS = 0;
@@ -183,8 +183,17 @@ public:
             if (stepTests > maxStepTest) stepTests = maxStepTest;
         }
 
+        unsigned int minFrame = 1;
+        unsigned int maxFrame = 1000;
+        ImGui::Text("Frame per step");
+        if(ImGui::InputScalar((std::to_string(minFrame) + "-" + std::to_string(maxFrame) + "##3").c_str(), ImGuiDataType_U32, &maxNumFrame)) {
+            if (maxNumFrame < minFrame) maxNumFrame = minFrame;
+            if (maxNumFrame > maxFrame) maxNumFrame = maxFrame;
+        }
+
         ImGui::Separator();
-        ImGui::Text("%s",("Range: " + std::to_string(actualNumPoints) + " - " + std::to_string(maxNumPoints) + " steps: " + std::to_string(stepTests)).c_str());
+        ImGui::Text("%s",("Range: " + std::to_string(actualNumPoints) + " - " + std::to_string(maxNumPoints) + " steps: " 
+                          + std::to_string(stepTests) + "x" + std::to_string(maxNumFrame) + "fps").c_str());
 
         if(ImGui::Button("Start")) {
             isTestRunning = true;
