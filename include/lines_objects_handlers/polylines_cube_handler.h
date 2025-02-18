@@ -28,9 +28,7 @@ public:
     virtual void udpateRandom(uint num) override;
 
     virtual void drawImGuiSettings() override;
-
-    virtual void drawImGuiTesting() override;
-
+    
 private:
     vcl::lines::Lines& getPolylines();
 

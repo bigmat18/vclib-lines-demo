@@ -105,10 +105,6 @@ void PolylinesCubeHandler::drawImGuiSettings()
     ImGui::End();
 }
 
-void PolylinesCubeHandler::drawImGuiTesting() 
-{
-}
-
 vcl::lines::Lines& PolylinesCubeHandler::getPolylines()
 {
     switch(mType) {

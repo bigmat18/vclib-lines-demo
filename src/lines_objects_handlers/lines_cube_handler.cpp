@@ -98,16 +98,6 @@ void LinesCubeHandler::drawImGuiSettings()
     ImGui::End();
 }
 
-void LinesCubeHandler::drawImGuiTesting() 
-{
-    ImVec2 screenSize = ImGui::GetIO().DisplaySize;
-
-    ImGui::SetNextWindowSize(ImVec2(screenSize.x - (screenSize.x * 0.25f) - (screenSize.x * 0.2f), screenSize.y * 0.5), ImGuiCond_Always);
-    ImGui::SetNextWindowPos(ImVec2(screenSize.x * 0.2, screenSize.y * 0.5), ImGuiCond_Always);
-    ImGui::Begin("Lines Tests", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
-    ImGui::End();   
-}
-
 vcl::lines::Lines& LinesCubeHandler::getLines()
 {
     switch(mType) {

@@ -25,8 +25,6 @@ public:
 
     virtual void drawImGuiSettings() = 0;
 
-    virtual void drawImGuiTesting() = 0;
-
     const std::string& name() const { return mName; }
 
     std::string& name() { return mName; }

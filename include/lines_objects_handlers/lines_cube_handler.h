@@ -29,8 +29,6 @@ public:
 
     virtual void drawImGuiSettings() override;
 
-    virtual void drawImGuiTesting() override;
-
 private:
     vcl::lines::Lines& getLines();
 

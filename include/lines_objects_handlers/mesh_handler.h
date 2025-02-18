@@ -20,9 +20,6 @@ public:
     virtual void drawObject(uint viewId) override { mMesh.draw(viewId); }
 
     virtual void drawImGuiSettings() override;
-
-    virtual void drawImGuiTesting() override;
-
 private:
     void generateMesh(const std::string path);
 };

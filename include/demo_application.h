@@ -40,8 +40,8 @@ public:
     {
         mObjects.push_back(std::make_unique<LinesCubeHandler>("Lines in cube", "Set of lines inside a cube with random position and random params"));
         mObjects.push_back(std::make_unique<PolylinesCubeHandler>("Polylines in cube", "A single polylines makes with random points and data"));
-        // mObjects.push_back(std::make_unique<MeshHandler>("./bimba.obj"));
-        // mObjects.push_back(std::make_unique<MeshHandler>("./bunny.obj"));
+        mObjects.push_back(std::make_unique<MeshHandler>("./bimba.obj"));
+        mObjects.push_back(std::make_unique<MeshHandler>("./bunny.obj"));
     };
 
     virtual void onDraw(vcl::uint viewId) override
@@ -67,8 +67,6 @@ public:
                     mObjects[mIndexSelected]->udpateRandom(actualNumPoints);
                 }
             } else {
-                // close file
-
                 maxNumPoints = 1000;
                 actualNumPoints = 10;
                 
