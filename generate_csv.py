@@ -3,6 +3,8 @@ import psutil
 import time
 import threading
 import GPUtil
+import csv
+import argparse
 
 cpu_usage = 0.0
 memory_usage = 0.0
@@ -34,11 +36,20 @@ cpu_thread = threading.Thread(target=monitor_cpu, args=(process.pid,))
 cpu_thread.daemon = True
 cpu_thread.start()
 
-while True:
-    stderr_line = process.stderr.readline()
-    if not stderr_line:
-        break
-    
-    print(f"CPU Usage: {cpu_usage:.2f}% | Memory Usage: {memory_usage:.2f} MB | GPU Usage: {gpu_usage:.2f}% | GPU Memory: {gpu_memory_usage:.2f} MB | STDERR: {stderr_line.strip()}")
-    
+csv_filename = "benchmark_output.csv"
+with open(csv_filename, mode='w', newline='') as csv_file:
+    csv_writer = csv.writer(csv_file)
+    csv_writer.writerow(['numLines', 'deltaTime', 'cpu_usage', 'cpu_memory', 'gpu_usage', 'gpu_memory'])
+    index = 0
+    while True:
+        index += 1
+        stderr_line = process.stderr.readline()
+        if not stderr_line:
+            break
+        
+        stderr_line = stderr_line[:-1].split(",")
+        csv_writer.writerow([int(stderr_line[0]), float(stderr_line[1]), cpu_usage, memory_usage, gpu_usage, gpu_memory_usage])
+        if index % 20:
+            csv_file.flush()
+
 process.wait()
