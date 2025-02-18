@@ -21,6 +21,8 @@ public:
 
     virtual void drawObject(unsigned int viewId) = 0;
 
+    virtual void udpateRandom(unsigned int num) {};
+
     virtual void drawImGuiSettings() = 0;
 
     virtual void drawImGuiTesting() = 0;
