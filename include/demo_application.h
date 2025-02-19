@@ -197,6 +197,14 @@ public:
             if (maxNumFrame > maxFrame) maxNumFrame = maxFrame;
         }
 
+        unsigned int minUpdate = 0;
+        unsigned int maxUpdate = maxNumFrame;
+        ImGui::Text("Update ogni quanti frame");
+        if(ImGui::InputScalar((std::to_string(minFrame) + "-" + std::to_string(maxFrame) + "##3").c_str(), ImGuiDataType_U32, &maxNumFrame)) {
+            if (maxNumFrame < minFrame) maxNumFrame = minFrame;
+            if (maxNumFrame > maxFrame) maxNumFrame = maxFrame;
+        }
+
         ImGui::Separator();
         ImGui::Text("%s",("Range: " + std::to_string(actualNumPoints) + " - " + std::to_string(maxNumPoints) + " steps: " 
                           + std::to_string(stepTests) + "x" + std::to_string(maxNumFrame) + "fps").c_str());
