@@ -39,10 +39,10 @@ def monitor_cpu(process_pid):
         time.sleep(0.1)
 
 
-for el in range(0, 4):
+for el in range(0, 5):
 
     process = subprocess.Popen(
-        ["./build/main", "10000", "100000", "200", "10000", "0", str(el)],
+        ["./build/main", "1000", "10000", "200", "1000", "0", str(el)],
         stderr=subprocess.PIPE,
         text=True,
     )

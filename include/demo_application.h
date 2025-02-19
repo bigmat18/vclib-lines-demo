@@ -51,19 +51,13 @@ public:
             auto currentTime = std::chrono::high_resolution_clock::now();
             std::chrono::duration<float> deltaTime = currentTime - lastTime;
             lastTime = currentTime;
-            float fps = 1.0f / deltaTime.count();
-
-            if(avgFPS == 0) avgFPS = fps;
-            else            avgFPS = (avgFPS + fps) / 2;
 
             if(actualNumPoints <= maxNumPoints) {
                 if(actualNumFrame < maxNumFrame) {
                     actualNumFrame++;
+                    std::cerr << actualNumPoints << "," << deltaTime.count() << "\n";
                 } else {
-                    std::cerr << actualNumPoints << "," << avgFPS << "\n";
-
                     actualNumPoints += stepTests;
-                    avgFPS = 0;
                     actualNumFrame = 0;
                     mObjects[mIndexSelected]->udpateRandom(actualNumPoints);
                 }
@@ -75,7 +69,6 @@ public:
                 actualNumFrame = 0;
                 
                 stepTests = 10;
-                avgFPS = 0;
                 isTestRunning = false;
             }
         } else if(blockWhenTestsEnd) {
