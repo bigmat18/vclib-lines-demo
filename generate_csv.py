@@ -2,7 +2,6 @@ import subprocess
 import psutil
 import time
 import threading
-import GPUtil
 import csv
 import argparse
 
@@ -19,10 +18,13 @@ def monitor_cpu(process_pid):
         cpu_usage = psutil.cpu_percent(interval=0.1)  # Calcola l'utilizzo della CPU
         memory_usage = proc_monitor.memory_info().rss / (1024 * 1024)  # Memoria in MB
 
-        gpus = GPUtil.getGPUs()
-        if gpus:
-            gpu_usage = gpus[0].load  # Percentuale di utilizzo della GPU
-            gpu_memory_usage = gpus[0].memoryUsed / 1024  # Memoria GPU in MB
+        if has_nvidia_gpu():
+            import GPUtil
+
+            gpus = GPUtil.getGPUs()
+            if gpus:
+                gpu_usage = gpus[0].load  # Percentuale di utilizzo della GPU
+                gpu_memory_usage = gpus[0].memoryUsed / 1024  # Memoria GPU in MB
 
         time.sleep(0.1)
 
