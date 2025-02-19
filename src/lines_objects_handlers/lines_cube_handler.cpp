@@ -75,9 +75,7 @@ void LinesCubeHandler::drawImGuiSettings()
     ImGui::Text("Lines Render type");
     int type = static_cast<int>(mType);
     if (ImGui::Combo("##4", &type, optionsTypes, IM_ARRAYSIZE(optionsTypes))) {
-        mType = static_cast<vcl::lines::LinesTypes>(type);
-        vcl::lines::LinesSettings &newSettings = getLines().settings();
-        newSettings = settings;
+        setType(static_cast<vcl::lines::LinesTypes>(type));
     }
 
     int previusNumLines = mNumLines;

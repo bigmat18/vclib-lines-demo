@@ -10,6 +10,16 @@ memory_usage = 0.0
 gpu_usage = 0.0
 gpu_memory_usage = 0.0
 
+def has_nvidia_gpu():
+    try:
+        subprocess.run(["nvidia-smi"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+        return True
+    except subprocess.CalledProcessError:
+        return False
+    except FileNotFoundError:
+        return False
+
+
 def monitor_cpu(process_pid):
     global cpu_usage, memory_usage, gpu_usage, gpu_memory_usage
     proc_monitor = psutil.Process(process_pid)
@@ -28,30 +38,36 @@ def monitor_cpu(process_pid):
 
         time.sleep(0.1)
 
-process = subprocess.Popen(
-    ["./build/main"],
-    stderr=subprocess.PIPE,
-    text=True,
-)
 
-cpu_thread = threading.Thread(target=monitor_cpu, args=(process.pid,))
-cpu_thread.daemon = True
-cpu_thread.start()
+for el in range(0, 4):
 
-csv_filename = "benchmark_output.csv"
-with open(csv_filename, mode='w', newline='') as csv_file:
-    csv_writer = csv.writer(csv_file)
-    csv_writer.writerow(['numLines', 'deltaTime', 'cpu_usage', 'cpu_memory', 'gpu_usage', 'gpu_memory'])
-    index = 0
-    while True:
-        index += 1
-        stderr_line = process.stderr.readline()
-        if not stderr_line:
-            break
-        
-        stderr_line = stderr_line[:-1].split(",")
-        csv_writer.writerow([int(stderr_line[0]), float(stderr_line[1]), cpu_usage, memory_usage, gpu_usage, gpu_memory_usage])
-        if index % 20:
-            csv_file.flush()
+    process = subprocess.Popen(
+        ["./build/main", "10000", "100000", "200", "10000", "0", str(el)],
+        stderr=subprocess.PIPE,
+        text=True,
+    )
 
-process.wait()
+    cpu_thread = threading.Thread(target=monitor_cpu, args=(process.pid,))
+    cpu_thread.daemon = True
+    cpu_thread.start()
+
+    csv_filename = "benchmark_output" + str(el) + ".csv"
+    with open(csv_filename, mode='w', newline='') as csv_file:
+        csv_writer = csv.writer(csv_file)
+        csv_writer.writerow(['numLines', 'deltaTime', 'cpu_usage', 'cpu_memory', 'gpu_usage', 'gpu_memory'])
+        index = 0
+        while True:
+            index += 1
+            stderr_line = process.stderr.readline()
+            if not stderr_line:
+                break
+            
+            stderr_line = stderr_line[:-1].split(",")
+            try:
+                csv_writer.writerow([int(stderr_line[0]), float(stderr_line[1]), cpu_usage, memory_usage, gpu_usage, gpu_memory_usage])
+            except:
+                pass
+            if index % 20:
+                csv_file.flush()
+
+    process.wait()

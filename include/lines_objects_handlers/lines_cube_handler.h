@@ -25,6 +25,14 @@ public:
 
     virtual void drawObject(uint viewId) override { getLines().draw(viewId); }
 
+    virtual void setType(vcl::lines::LinesTypes type) 
+    {
+        vcl::lines::LinesSettings &settings = getLines().settings();
+        mType = type;
+        vcl::lines::LinesSettings &newSettings = getLines().settings();
+        newSettings = settings;
+    }
+
     virtual void udpateRandom(uint num) override;
 
     virtual void drawImGuiSettings() override;

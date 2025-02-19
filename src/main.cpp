@@ -9,6 +9,17 @@ int main(int argc, char** argv)
         vcl::ViewerDrawer>;
 
     App tw("Lines demo application");
+    if(argc == 7) {
+        tw.actualNumPoints = std::stoul(argv[1]);
+        tw.maxNumPoints = std::stoul(argv[2]);
+        tw.maxNumFrame = std::stoul(argv[3]);
+        tw.stepTests = std::stoul(argv[4]);
+        tw.mIndexSelected = atoi(argv[5]);
+        tw.setObjType(static_cast<vcl::lines::LinesTypes>(atoi(argv[6])));
+        tw.setupTest();
+        tw.isTestRunning = true;
+        tw.blockWhenTestsEnd = true;
+    }
     tw.fitScene();
     tw.show();
 

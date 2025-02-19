@@ -18,10 +18,11 @@ class DemoApplication : public vcl::imgui::ImGuiDrawer<DerivedRenderApp>
 {
     using ParentDrawer = vcl::imgui::ImGuiDrawer<DerivedRenderApp>;
     std::vector<std::unique_ptr<LinesObjectHandler>> mObjects;
-    int mIndexSelected = -1;
-
+    
     std::chrono::high_resolution_clock::time_point lastTime = std::chrono::high_resolution_clock::now();
     
+public:
+    int mIndexSelected = -1;
     unsigned int maxNumPoints = 1000;
     unsigned int actualNumPoints = 0;
     
@@ -31,6 +32,7 @@ class DemoApplication : public vcl::imgui::ImGuiDrawer<DerivedRenderApp>
     unsigned int stepTests = 10;
     float avgFPS = 0;
     bool isTestRunning = false;
+    bool blockWhenTestsEnd = false;
 
 
 public:
@@ -44,6 +46,7 @@ public:
 
     virtual void onDraw(vcl::uint viewId) override
     {
+
         if(isTestRunning) {
             auto currentTime = std::chrono::high_resolution_clock::now();
             std::chrono::duration<float> deltaTime = currentTime - lastTime;
@@ -75,7 +78,10 @@ public:
                 avgFPS = 0;
                 isTestRunning = false;
             }
+        } else if(blockWhenTestsEnd) {
+            std::exit(1);
         }
+
 
         ParentDrawer::onDraw(viewId);
 
@@ -86,7 +92,7 @@ public:
                     mIndexSelected = indexSelected;
             }
 
-            if(mIndexSelected != -1 && mObjects[mIndexSelected]->isVisible()) {
+            if(mIndexSelected != -1) {
                 mObjects[mIndexSelected]->drawObject(viewId);
 
                 if(!isTestRunning) {
@@ -95,6 +101,17 @@ public:
                 }
             }
         }
+    }
+
+    void setObjType(vcl::lines::LinesTypes type)
+    {
+        mObjects[mIndexSelected]->setType(type);
+    }
+
+    void setupTest()
+    {
+        lastTime = std::chrono::high_resolution_clock::now();
+        mObjects[mIndexSelected]->udpateRandom(actualNumPoints);
     }
 
     int drawImGuiScene() 
@@ -193,8 +210,7 @@ public:
 
         if(ImGui::Button("Start")) {
             isTestRunning = true;
-            lastTime = std::chrono::high_resolution_clock::now();
-            mObjects[mIndexSelected]->udpateRandom(actualNumPoints);
+            setupTest();
         }
         ImGui::End();   
 
