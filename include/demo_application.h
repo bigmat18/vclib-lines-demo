@@ -24,12 +24,17 @@ class DemoApplication : public vcl::imgui::ImGuiDrawer<DerivedRenderApp>
 public:
     int mIndexSelected = -1;
     unsigned int maxNumPoints = 1000;
+    #ifndef __APPLE__
     unsigned int actualNumPoints = 0;
-    
+    #else
+    unsigned int actualNumPoints = 1;
+    #endif
+
     unsigned int maxNumFrame = 1000;
     unsigned int actualNumFrame = 0;
     
     unsigned int stepTests = 10;
+    unsigned int updatePerTest = 0;
     float avgFPS = 0;
     bool isTestRunning = false;
     bool blockWhenTestsEnd = false;
@@ -54,8 +59,11 @@ public:
 
             if(actualNumPoints <= maxNumPoints) {
                 if(actualNumFrame < maxNumFrame) {
-                    actualNumFrame++;
                     std::cerr << actualNumPoints << "," << deltaTime.count() << "\n";
+                    actualNumFrame++;
+
+                    if(updatePerTest != 0 && actualNumFrame % updatePerTest == 0)
+                        mObjects[mIndexSelected]->udpateRandom(actualNumPoints);
                 } else {
                     actualNumPoints += stepTests;
                     actualNumFrame = 0;
@@ -165,7 +173,12 @@ public:
         ImGui::SetNextWindowPos(ImVec2(screenSize.x * 0.2, screenSize.y * 0.7), ImGuiCond_Always);
         ImGui::Begin("Lines Tests", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
         
+        #ifndef __APPLE__
         unsigned int minStartTest = 0;
+        #else
+        unsigned int minStartTest = 1;
+        #endif
+        
         unsigned int maxStartTest = maxNumPoints - 1;
         ImGui::Text("Start test value");
         if(ImGui::InputScalar((std::to_string(minStartTest) + "-" + std::to_string(maxStartTest) + "##0").c_str(), ImGuiDataType_U32, &actualNumPoints)) {
@@ -199,15 +212,15 @@ public:
 
         unsigned int minUpdate = 0;
         unsigned int maxUpdate = maxNumFrame;
-        ImGui::Text("Update ogni quanti frame");
-        if(ImGui::InputScalar((std::to_string(minFrame) + "-" + std::to_string(maxFrame) + "##3").c_str(), ImGuiDataType_U32, &maxNumFrame)) {
-            if (maxNumFrame < minFrame) maxNumFrame = minFrame;
-            if (maxNumFrame > maxFrame) maxNumFrame = maxFrame;
+        ImGui::Text("Update per frame");
+        if(ImGui::InputScalar((std::to_string(minUpdate) + "-" + std::to_string(maxUpdate) + "##4").c_str(), ImGuiDataType_U32, &updatePerTest)) {
+            if (updatePerTest < minUpdate) updatePerTest = minUpdate;
+            if (updatePerTest > maxUpdate) updatePerTest = maxUpdate;
         }
 
         ImGui::Separator();
         ImGui::Text("%s",("Range: " + std::to_string(actualNumPoints) + " - " + std::to_string(maxNumPoints) + " steps: " 
-                          + std::to_string(stepTests) + "x" + std::to_string(maxNumFrame) + "fps").c_str());
+                          + std::to_string(stepTests) + "x" + std::to_string(maxNumFrame) + "fps\t" + "1 update x " + std::to_string(updatePerTest) + " fps").c_str());
 
         if(ImGui::Button("Start")) {
             isTestRunning = true;
