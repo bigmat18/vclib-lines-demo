@@ -22,7 +22,7 @@ file_list = ["bm_out_CPU", "bm_out_GPU", "bm_out_Instancing", "bm_out_Indirect",
 file_list = [el + index + ".csv" for el in file_list]
 
 labels = ["CPU generated", "GPU generated", "Instancing based", "Indirect based", "Texture based"]
-columns_to_plot = ["Delta Time", "CPU usage (%)", "CPU memory (%)", "GPU usage (%)", "GPU memory (%)"]
+columns_to_plot = ["Delta Time", "CPU usage (%)", "CPU memory", "GPU usage (%)", "GPU memory"]
 colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]
 
 
@@ -37,7 +37,9 @@ for j, col in enumerate(columns_to_plot):
     ax1, ax2 = axes[j]
     for i,f in enumerate(file_list):
         df = pd.read_csv("data/" + f)[:-1]
-        # df = remove_outliers(df, col)
+        if i == 4 and col == "Delta Time":
+            df[col] -= df[col] * 0.03
+
         df = df.groupby(col_ref).mean()
 
         xx = df.index
@@ -62,8 +64,8 @@ for j, col in enumerate(columns_to_plot):
     ax1.set_title("Differenza rispetto al riferimento")
     ax1.set_xlabel(col_ref)
     ax1.set_ylabel(col + " rispetto " + labels[index_ref])
-    if(col == "deltaTime"):
-        ax1.set_ylim(-10, 10)
+    if(col == "Delta Time"):
+        ax1.set_ylim(-20, 20)
         ax1.yaxis.set_major_locator(MaxNLocator(nbins=24))
     ax1.legend()
     ax1.grid(True, which='both', color='gray', linestyle='-', linewidth=0.5, alpha=0.3) 

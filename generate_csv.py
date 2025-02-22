@@ -45,12 +45,12 @@ def monitor_cpu(process_pid):
         time.sleep(0.1)
 
 
-startNumPoints = 10
-endNumPoints = 1000
+startNumPoints = 10000
+endNumPoints = 1000000
 framePerSteps = 300
-stepSize = 10
+stepSize = 5000
 objSelected = 0 
-updatePerSecond = 10
+updatePerSecond = 0
 
 for el in range(0, 5):
 
@@ -66,13 +66,19 @@ for el in range(0, 5):
 
     csv_filename = "data/bm_out_" + from_num_to_label(el)
     index = 0
-    while(os.path.exists(csv_filename)):
-        csv_filename += str(index)
+    while(os.path.exists(csv_filename+".csv")):
+        if index == 0:
+            csv_filename += str(index)
+        else:
+            csv_filename = csv_filename[:-1] + str(index)
+        index+=1
     csv_filename += ".csv"
+
+    # print(csv_filename)
 
     with open(csv_filename, mode='w', newline='') as csv_file:
         csv_writer = csv.writer(csv_file)
-        csv_writer.writerow(['Lines num', 'Delta Time', 'CPU usage (%)', 'CPU memory (%)', 'GPU usage (%)', 'GPU memory (%)'])
+        csv_writer.writerow(['Lines num', 'Delta Time', 'CPU usage (%)', 'CPU memory', 'GPU usage (%)', 'GPU memory'])
         index = 0
         while True:
             index += 1
