@@ -50,7 +50,7 @@ endNumPoints = 1000000
 framePerSteps = 300
 stepSize = 5000
 objSelected = 0 
-updatePerSecond = 0
+updatePerSecond = 5
 
 for el in range(0, 5):
 

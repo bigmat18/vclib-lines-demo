@@ -19,26 +19,35 @@ def remove_outliers(df, column, multiplier=1.5):
 
 index = ""
 file_list = ["bm_out_CPU", "bm_out_GPU", "bm_out_Instancing", "bm_out_Indirect", "bm_out_Texture"]
-file_list = [el + index + ".csv" for el in file_list]
+file_list = ["" + el + index + ".csv" for el in file_list]
 
 labels = ["CPU generated", "GPU generated", "Instancing based", "Indirect based", "Texture based"]
-columns_to_plot = ["Delta Time", "CPU usage (%)", "CPU memory", "GPU usage (%)", "GPU memory"]
+columns_to_plot = ["GPU memory"] #"Delta Time", "CPU usage (%)", "CPU memory", "GPU usage (%)", "GPU memory"
 colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]
 
+num_plots = 2
+fig, axes = plt.subplots(len(columns_to_plot), 2 if num_plots == 3 else 1, figsize=(6, len(columns_to_plot) * 4))
 
-fig, axes = plt.subplots(len(columns_to_plot), 2, figsize=(12, len(columns_to_plot) * 4))
-
-index_ref = 1
+index_ref = 0
 col_ref = "Lines num"
 dfref = pd.read_csv("data/" + file_list[index_ref])[:-1]
 dfref = dfref.groupby(col_ref).mean()
 
 for j, col in enumerate(columns_to_plot):
-    ax1, ax2 = axes[j]
+    if(len(columns_to_plot) != 1):
+        axes_to_use = axes[j]
+    else:
+        axes_to_use = axes
+
+    if num_plots == 1:
+        ax1 = axes_to_use
+    elif num_plots == 2:
+        ax2 = axes_to_use
+    elif num_plots == 3:
+        ax1, ax2 = axes_to_use
+
     for i,f in enumerate(file_list):
         df = pd.read_csv("data/" + f)[:-1]
-        if i == 4 and col == "Delta Time":
-            df[col] -= df[col] * 0.03
 
         df = df.groupby(col_ref).mean()
 
@@ -54,29 +63,34 @@ for j, col in enumerate(columns_to_plot):
         yyRef = np.array(yyRef)
         yy_diff_percent = ((yy - yyRef) / yyRef) * 100
 
-        if i == index_ref:
-            ax1.plot(xx, np.zeros_like(yy_diff_percent), '--', color=colors[i], label=f"Riferimento: {labels[i]}")
-        else:
-            ax1.plot(xx, yy_diff_percent, label=labels[i], color=colors[i])
+        if num_plots == 1 or num_plots == 3:
+            if i == index_ref:
+                ax1.plot(xx, np.zeros_like(yy_diff_percent), '--', color=colors[i], label=f"Riferimento: {labels[i]}")
+            else:
+                ax1.plot(xx, yy_diff_percent, label=labels[i], color=colors[i])
 
-        ax2.plot(xx, yy, label=labels[i], color=colors[i])
+        if num_plots == 2 or num_plots == 3:
+            ax2.plot(xx, yy, label=labels[i], color=colors[i])
 
-    ax1.set_title("Differenza rispetto al riferimento")
-    ax1.set_xlabel(col_ref)
-    ax1.set_ylabel(col + " rispetto " + labels[index_ref])
-    if(col == "Delta Time"):
-        ax1.set_ylim(-20, 20)
-        ax1.yaxis.set_major_locator(MaxNLocator(nbins=24))
-    ax1.legend()
-    ax1.grid(True, which='both', color='gray', linestyle='-', linewidth=0.5, alpha=0.3) 
+    if num_plots == 1 or num_plots == 3:
+        ax1.set_title("Differenza rispetto al riferimento")
+        ax1.set_xlabel(col_ref)
+        ax1.set_ylabel("Diff. " + col + " (%) rispetto " + labels[index_ref])
+        if(col == "Delta Time"):
+            # ax1.set_ylim(-15, 5)
+            ax1.yaxis.set_major_locator(MaxNLocator(nbins=15))
+        ax1.legend()
+        ax1.grid(True, which='both', color='gray', linestyle='-', linewidth=0.5, alpha=0.3) 
 
-    ax2.set_title("Valori assoluti di " + col)
-    ax2.set_xlabel(col_ref)
-    ax2.set_ylabel(col)
-    ax2.yaxis.set_major_locator(MaxNLocator(nbins=13))
-    ax2.legend()
-    ax2.grid(True, which='both', color='gray', linestyle='-', linewidth=0.5, alpha=0.3) 
+    if num_plots == 2 or num_plots == 3:
+        ax2.set_title("Valori assoluti di " + col)
+        ax2.set_xlabel(col_ref)
+        ax2.set_ylabel(col + " (Gb)")
+        ax2.yaxis.set_major_locator(MaxNLocator(nbins=13))
+        ax2.legend()
+        ax2.grid(True, which='both', color='gray', linestyle='-', linewidth=0.5, alpha=0.3) 
 
+plt.savefig("dy-abs-gpu_memory.pdf", format="pdf", dpi=1200, bbox_inches="tight")
 plt.gcf().canvas.manager.set_window_title('Grafici Benchmark')
 plt.tight_layout()
 plt.show()
