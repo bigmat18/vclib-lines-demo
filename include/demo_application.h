@@ -7,6 +7,7 @@
 #include "lines_objects_handlers/lines_cube_handler.h"
 #include "lines_objects_handlers/polylines_cube_handler.h"
 #include "lines_objects_handlers/mesh_handler.h"
+#include "lines_objects_handlers/graph_handler.h"
 
 #include <chrono>
 
@@ -47,6 +48,8 @@ public:
     {
         mObjects.push_back(std::make_unique<LinesCubeHandler>("Lines in cube", "Set of lines inside a cube with random position and random params"));
         mObjects.push_back(std::make_unique<PolylinesCubeHandler>("Polylines in cube", "A single polylines makes with random points and data"));
+        mObjects.push_back(std::make_unique<MeshHandler>("sphere.obj"));
+        mObjects.push_back(std::make_unique<GraphHandler>("prova"));
     };
 
     virtual void onDraw(vcl::uint viewId) override

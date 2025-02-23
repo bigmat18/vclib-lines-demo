@@ -23,7 +23,7 @@ public:
 
     virtual void udpateRandom(unsigned int num) {};
 
-    virtual void drawImGuiSettings() = 0;
+    virtual void drawImGuiSettings() {};
 
     virtual void setType(vcl::lines::LinesTypes type) {};
 
