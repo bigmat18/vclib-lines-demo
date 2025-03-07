@@ -29,10 +29,8 @@ void MeshHandler::generateMesh(const std::string path)
     vcl::MeshRenderSettings settings(m);
     settings.setWireframeVisibility(true);
     settings.setSurfaceVisibility(false);
-    settings.setWireframeWidth(1);
+    settings.setWireframeWidth(3);
 
-    vcl::DrawableMesh<vcl::TriMesh> drawable(m);
-    drawable.setRenderSettings(settings);
-
-    mMesh = drawable;
+    mMesh = vcl::DrawableMesh<vcl::TriMesh>(m);
+    mMesh.setRenderSettings(settings);
 }

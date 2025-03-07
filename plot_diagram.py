@@ -19,10 +19,10 @@ def remove_outliers(df, column, multiplier=1.5):
 
 index = ""
 file_list = ["bm_out_CPU", "bm_out_GPU", "bm_out_Instancing", "bm_out_Indirect", "bm_out_Texture"]
-file_list = ["" + el + index + ".csv" for el in file_list]
+file_list = ["static/" + el + index + ".csv" for el in file_list]
 
 labels = ["CPU generated", "GPU generated", "Instancing based", "Indirect based", "Texture based"]
-columns_to_plot = ["GPU memory"] #"Delta Time", "CPU usage (%)", "CPU memory", "GPU usage (%)", "GPU memory"
+columns_to_plot = ["Delta Time"] #"Delta Time", "CPU usage (%)", "CPU memory", "GPU usage (%)", "GPU memory"
 colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd"]
 
 num_plots = 2
@@ -70,6 +70,7 @@ for j, col in enumerate(columns_to_plot):
                 ax1.plot(xx, yy_diff_percent, label=labels[i], color=colors[i])
 
         if num_plots == 2 or num_plots == 3:
+            yy *= 1000
             ax2.plot(xx, yy, label=labels[i], color=colors[i])
 
     if num_plots == 1 or num_plots == 3:
@@ -85,12 +86,15 @@ for j, col in enumerate(columns_to_plot):
     if num_plots == 2 or num_plots == 3:
         ax2.set_title("Valori assoluti di " + col)
         ax2.set_xlabel(col_ref)
-        ax2.set_ylabel(col + " (Gb)")
-        ax2.yaxis.set_major_locator(MaxNLocator(nbins=13))
+        ax2.set_ylabel(col + " (ms)")
+        ax2.set_yscale('log')
+        # ax2.set_xlim(0, 200000)
+        # ax2.set_ylim(0, 10)
+        ax2.yaxis.set_major_locator(MaxNLocator(nbins=15))
         ax2.legend()
         ax2.grid(True, which='both', color='gray', linestyle='-', linewidth=0.5, alpha=0.3) 
 
-plt.savefig("dy-abs-gpu_memory.pdf", format="pdf", dpi=1200, bbox_inches="tight")
+plt.savefig("static_log.pdf", format="pdf", dpi=1200, bbox_inches="tight")
 plt.gcf().canvas.manager.set_window_title('Grafici Benchmark')
 plt.tight_layout()
 plt.show()

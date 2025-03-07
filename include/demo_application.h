@@ -48,7 +48,7 @@ public:
     {
         mObjects.push_back(std::make_unique<LinesCubeHandler>("Lines in cube", "Set of lines inside a cube with random position and random params"));
         mObjects.push_back(std::make_unique<PolylinesCubeHandler>("Polylines in cube", "A single polylines makes with random points and data"));
-        mObjects.push_back(std::make_unique<MeshHandler>("sphere.obj"));
+        mObjects.push_back(std::make_unique<MeshHandler>("greek_helmet.obj"));
         mObjects.push_back(std::make_unique<GraphHandler>("nodes.csv", "edges.csv", "shortest_path.csv"));
     };
 
@@ -91,8 +91,8 @@ public:
 
         if (!ParentDrawer::isWindowMinimized()) {
             if(!isTestRunning) {
-                // int indexSelected = drawImGuiScene();
-                int indexSelected = 3;
+                int indexSelected = drawImGuiScene();
+                // int indexSelected = 2;
                 if(indexSelected != mIndexSelected)
                     mIndexSelected = indexSelected;
             }
@@ -101,8 +101,8 @@ public:
                 mObjects[mIndexSelected]->drawObject(viewId);
 
                 if(!isTestRunning) {
-                    // mObjects[mIndexSelected]->drawImGuiSettings();
-                    // drawImGuiTesting();
+                    mObjects[mIndexSelected]->drawImGuiSettings();
+                    drawImGuiTesting();
                 }
             }
         }
@@ -126,7 +126,7 @@ public:
 
         ImVec2 screenSize = ImGui::GetIO().DisplaySize;
 
-        ImGui::SetNextWindowSize(ImVec2(screenSize.x * 0.2f, screenSize.y), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(screenSize.x * 0.15f, screenSize.y), ImGuiCond_Always);
         ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
         ImGui::Begin("Scene elements", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
 
@@ -173,8 +173,8 @@ public:
     {
         ImVec2 screenSize = ImGui::GetIO().DisplaySize;
     
-        ImGui::SetNextWindowSize(ImVec2(screenSize.x - (screenSize.x * 0.25f) - (screenSize.x * 0.2f), screenSize.y * 0.3), ImGuiCond_Always);
-        ImGui::SetNextWindowPos(ImVec2(screenSize.x * 0.2, screenSize.y * 0.7), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(screenSize.x - (screenSize.x * 0.25f) - (screenSize.x * 0.15f), screenSize.y * 0.2), ImGuiCond_Always);
+        ImGui::SetNextWindowPos(ImVec2(screenSize.x * 0.15, screenSize.y * 0.8), ImGuiCond_Always);
         ImGui::Begin("Lines Tests", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
         
         #ifndef __APPLE__
