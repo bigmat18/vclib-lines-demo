@@ -10,12 +10,12 @@ MeshHandler::MeshHandler(const std::string path) : LinesObjectHandler("", "")
 
 void MeshHandler::drawImGuiSettings() 
 {
-    ImVec2 screenSize = ImGui::GetIO().DisplaySize;
+    // ImVec2 screenSize = ImGui::GetIO().DisplaySize;
 
-    ImGui::SetNextWindowSize(ImVec2(screenSize.x * 0.25f, screenSize.y), ImGuiCond_Always);
-    ImGui::SetNextWindowPos(ImVec2(screenSize.x - (screenSize.x * 0.25f), 0), ImGuiCond_Always);
-    ImGui::Begin("Lines settings", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
-    ImGui::End();
+    // ImGui::SetNextWindowSize(ImVec2(screenSize.x * 0.25f, screenSize.y), ImGuiCond_Always);
+    // ImGui::SetNextWindowPos(ImVec2(screenSize.x - (screenSize.x * 0.25f), 0), ImGuiCond_Always);
+    // ImGui::Begin("Lines settings", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+    // ImGui::End();
 }
 
 void MeshHandler::generateMesh(const std::string path) 

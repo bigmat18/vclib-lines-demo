@@ -48,7 +48,7 @@ public:
     {
         mObjects.push_back(std::make_unique<LinesCubeHandler>("Lines in cube", "Set of lines inside a cube with random position and random params"));
         mObjects.push_back(std::make_unique<PolylinesCubeHandler>("Polylines in cube", "A single polylines makes with random points and data"));
-        mObjects.push_back(std::make_unique<MeshHandler>("sphere.obj"));
+        mObjects.push_back(std::make_unique<MeshHandler>("bimba.obj"));
         mObjects.push_back(std::make_unique<GraphHandler>("nodes.csv", "edges.csv", "shortest_path.csv"));
     };
 
@@ -91,8 +91,8 @@ public:
 
         if (!ParentDrawer::isWindowMinimized()) {
             if(!isTestRunning) {
-                // int indexSelected = drawImGuiScene();
-                int indexSelected = 3;
+                int indexSelected = drawImGuiScene();
+                // int indexSelected = 3;
                 if(indexSelected != mIndexSelected)
                     mIndexSelected = indexSelected;
             }
@@ -101,8 +101,8 @@ public:
                 mObjects[mIndexSelected]->drawObject(viewId);
 
                 if(!isTestRunning) {
-                    // mObjects[mIndexSelected]->drawImGuiSettings();
-                    // drawImGuiTesting();
+                    mObjects[mIndexSelected]->drawImGuiSettings();
+                    drawImGuiTesting();
                 }
             }
         }

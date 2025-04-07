@@ -190,8 +190,8 @@ void GraphHandler::generateLines(const std::vector<Edge>& edges)
         if(mNodes.find(edge.node0) != mNodes.end() && mNodes.find(edge.node1) != mNodes.end()) {
             Node n1 = mNodes[edge.node0];
             Node n2 = mNodes[edge.node1];
-            mLines.push_back(vcl::lines::LinesVertex(n1.x, n1.y, n1.z, vcl::lines::LinesVertex::COLOR(edge.value, 0, 0, 1)));
-            mLines.push_back(vcl::lines::LinesVertex(n2.x, n2.y, n2.z, vcl::lines::LinesVertex::COLOR(edge.value, 0, 0, 1)));
+            mLines.push_back(vcl::lines::LinesVertex(n1.x, n1.y, n1.z, vcl::lines::LinesVertex::COLOR(0, 0, 0, 1)));
+            mLines.push_back(vcl::lines::LinesVertex(n2.x, n2.y, n2.z, vcl::lines::LinesVertex::COLOR(0, 0, 0, 1)));
         } else {
             std::cout << "Chiave non trovata!" << std::endl;
             std::exit(0);

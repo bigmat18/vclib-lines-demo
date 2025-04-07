@@ -21,7 +21,7 @@ endforeach()
 file(GLOB_RECURSE SOURCES ${SRC_DIR}/*.cpp)
 add_executable(main ${SOURCES})
 target_include_directories(main PRIVATE include)
-target_link_libraries(main PUBLIC vclib bgfx)
+target_link_libraries(main PUBLIC vclib)
 target_add_bgfx_shaders(
     main
     ${RELATIVE_SHADERS_FILES}
