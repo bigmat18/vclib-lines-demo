@@ -11,6 +11,7 @@
 class MeshHandler : public LinesObjectHandler
 {
     vcl::DrawableMesh<vcl::TriMesh> mMesh;
+    uint8_t mWidth = 5;
 
 public:
     MeshHandler(const std::string path);

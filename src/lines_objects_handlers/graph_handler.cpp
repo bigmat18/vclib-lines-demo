@@ -16,10 +16,10 @@ GraphHandler::GraphHandler(const std::string& fileNode, const std::string& fileE
     loadPath(filePath);
 
     generateLines(edges);
-    mGPULines = vcl::lines::GPUGeneratedLines(mLines);
+    mGPULines = vcl::lines::CPUGeneratedLines(mLines);
     mGPULines.settings().setThickness(5);
 
-    mGPUPath = vcl::lines::GPUGeneratedPolylines(mNodesPath);
+    mGPUPath = vcl::lines::CPUGeneratedPolylines(mNodesPath);
     mGPUPath.settings().setThickness(10);
 
     generateSphere(20, 20, 0.2f);
@@ -190,8 +190,8 @@ void GraphHandler::generateLines(const std::vector<Edge>& edges)
         if(mNodes.find(edge.node0) != mNodes.end() && mNodes.find(edge.node1) != mNodes.end()) {
             Node n1 = mNodes[edge.node0];
             Node n2 = mNodes[edge.node1];
-            mLines.push_back(vcl::lines::LinesVertex(n1.x, n1.y, n1.z, vcl::lines::LinesVertex::COLOR(0, 0, 0, 1)));
-            mLines.push_back(vcl::lines::LinesVertex(n2.x, n2.y, n2.z, vcl::lines::LinesVertex::COLOR(0, 0, 0, 1)));
+            mLines.push_back(vcl::lines::LinesVertex(n1.x, n1.y, n1.z, vcl::lines::LinesVertex::COLOR(0, 0, 0, 0.5)));
+            mLines.push_back(vcl::lines::LinesVertex(n2.x, n2.y, n2.z, vcl::lines::LinesVertex::COLOR(0, 0, 0, 0.5)));
         } else {
             std::cout << "Chiave non trovata!" << std::endl;
             std::exit(0);

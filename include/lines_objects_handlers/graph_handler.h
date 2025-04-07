@@ -31,8 +31,8 @@ private:
     std::vector<vcl::lines::LinesVertex> mLines;
     std::vector<vcl::lines::LinesVertex> mNodesPath;
 
-    vcl::lines::GPUGeneratedLines mGPULines;
-    vcl::lines::GPUGeneratedPolylines mGPUPath;
+    vcl::lines::CPUGeneratedLines mGPULines;
+    vcl::lines::CPUGeneratedPolylines mGPUPath;
 
 public:
     GraphHandler(const std::string& fileNode, const std::string& fileEdge, const std::string& filePath);
